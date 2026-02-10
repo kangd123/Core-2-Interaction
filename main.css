@@ -1,0 +1,36 @@
+ html {background-image: url("https://png.pngtree.com/background/20230527/original/pngtree-this-image-shows-a-dark-maze-with-a-black-background-picture-image_2757674.jpg");
+         background-size: cover;
+         background-repeat: no-repeat;
+         height: 100%;
+         width: 100%;
+        } 
+  body {
+    margin: 0;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif, sans-serif;
+  }
+
+  h1 {
+    text-align: center;
+    color: #fff;
+    font-size: 5vw;
+    margin: 20px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
+  }
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px;
+  }
+  a {
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.255);
+    color: #000000;
+    border-radius: 5px;
+    font-weight: bold;
+    } 
+   a:hover {
+    background-color: rgba(0,0,0,0.6);
+    color: #fff;
+   }

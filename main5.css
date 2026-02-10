@@ -1,0 +1,43 @@
+body{
+  height:100%;
+  margin:0;
+  padding:0;
+  background:#ffffff; 
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+
+body{
+  display:flex;
+  align-items:center;      
+  justify-content:center;  
+  flex-direction:column;
+}
+
+
+body img{
+  display:block;
+  width:clamp(220px, 60vw, 760px); 
+  max-height:60vh;                 
+  height:auto;
+  object-fit:contain;
+}
+
+a{
+  position:fixed;
+  bottom:20px;
+  color:var(--arrow);
+  text-decoration:none;
+  font-size:40px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:56px;
+  height:56px;
+  background:transparent;
+  border-radius:8px;
+}
+
+.arrow-left{ left:20px; }
+.arrow-right{ right:20px; }
