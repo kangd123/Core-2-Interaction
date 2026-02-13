@@ -1,9 +1,10 @@
- html {background-image: url("https://png.pngtree.com/background/20230527/original/pngtree-this-image-shows-a-dark-maze-with-a-black-background-picture-image_2757674.jpg");
-         background-size: cover;
-         background-repeat: no-repeat;
-         height: 100%;
-         width: 100%;
-        } 
+ html {
+    background-image: url("https://png.pngtree.com/background/20230527/original/pngtree-this-image-shows-a-dark-maze-with-a-black-background-picture-image_2757674.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+    } 
   body {
     margin: 0;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif, sans-serif;
