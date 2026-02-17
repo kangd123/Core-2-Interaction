@@ -5,12 +5,13 @@
     height: 100%;
     width: 100%;
     } 
-  body {
-    margin: 0;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif, sans-serif;
-  }
 
-  h1 {
+body {
+ margin: 0;
+ font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif, sans-serif;
+}
+
+h1 {
     text-align: center;
     color: #fff;
     font-size: 5vw;
@@ -31,7 +32,7 @@
     border-radius: 5px;
     font-weight: bold;
     } 
-   a:hover {
+  a:hover {
     background-color: rgba(0,0,0,0.6);
     color: #fff;
    }

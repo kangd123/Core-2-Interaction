@@ -1,68 +1,66 @@
-body {
-            font-family: 'Courier New', monospace;
-            background-color: #f5f5f0;
-            min-height: 100vh;
-            padding: 40px 20px;
-            position: relative;
-        }
+.body {
+font-family: 'Courier New', monospace;
+background-color: #f5f5f0;
+min-height: 100vh;
+padding: 40px 20px;
+position: relative;
+}
 
  .text-column {
-            flex: 1;
-            font-size: 14px;
-            line-height: 1.8;
-            letter-spacing: 0.5px;
-        }
+flex: 1;
+font-size: 14px;
+line-height: 1.8;
+letter-spacing: 0.5px;
+}
 
 .top-section {
-            display: flex;
-            align-items: flex-start;
-            gap: 30px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+display: flex;
+align-items: flex-start;
+gap: 30px;
+max-width: 1400px;
+margin: 0 auto;
+}
 
-        .text-column {
-            flex: 1;
-            font-size: 14px;
-            line-height: 1.9;
-            letter-spacing: 0.4px;
-        }
+.text-column {
+flex: 1;
+font-size: 14px;
+line-height: 1.9;
+letter-spacing: 0.4px;
+}
 
-        .image-column {
-            flex: 0 0 auto;
-            width: 400px;
-        }
+.image-column {
+flex: 0 0 auto;
+width: 400px;
+}
 
-        .image-column img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
+.image-column img {
+width: 100%;
+height: auto;
+display: block;
+}
 
-        .bottom-section {
-            max-width: 1400px;
-            margin: 50px auto 0;
-            font-size: 14px;
-            line-height: 1.9;
-            letter-spacing: 0.4px;
-        }
+.bottom-section {
+max-width: 1400px;
+margin: 50px auto 0;
+font-size: 14px;
+line-height: 1.9;
+letter-spacing: 0.4px;
+}
 
-          .full-section {
-            margin-top: 60px;
-            max-width: 1400px;
-            margin-left: auto;
-            margin-right: auto;
-            
-        }
+.full-section {
+margin-top: 60px;
+max-width: 1400px;
+margin-left: auto;
+margin-right: auto;    
+}
 
-        .full-image {
-            width: 100%;
-            height: auto;
-            display: block;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            margin-bottom: 30px;
-           
-        }
+.full-image {
+width: 100%;
+height: auto;
+display: block;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+margin-bottom: 30px;           
+}
 
 
        

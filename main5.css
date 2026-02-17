@@ -51,70 +51,70 @@
 }
 
 .top-image-section {
-            width: 100%;
-            margin-bottom: 40px;
-        }
+width: 100%;
+margin-bottom: 40px;
+}
 
-        .top-image-section img {
-            width: 100%;
-            height: auto;
-            border: 1px solid #ddd;
-        }
+.top-image-section img {
+width: 100%;
+height: auto;
+border: 1px solid #ddd;
+}
 
         
-        .second-section {
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
+.second-section {
+display: flex;
+gap: 40px;
+align-items: flex-start;
+}
 
-        .text-column {
-            flex: 1;
-            font-size: 14px;
-            line-height: 1.8;
-            text-align: justify;
-        }
+.text-column {
+flex: 1;
+font-size: 14px;
+line-height: 1.8;
+text-align: justify;
+ }
 
-        .img-column {
-            flex: 1;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-        }
+.img-column {
+flex: 1;
+display: flex;
+align-items: flex-start;
+justify-content: center;
+}
 
-        .img-image {
-            width: 100%;
-            max-width: 500px;
-        }
+.img-image {
+width: 100%;
+max-width: 500px;
+}
 
-        .img-image img {
-            width: 100%;
-            height: auto;
-        }
+.img-image img {
+width: 100%;
+height: auto;
+}
 
 .text-column2{
-            flex: 1;
-            font-size: 14px;
-            line-height: 1.8;
-            text-align: justify;
-        }
+flex: 1;
+font-size: 14px;
+line-height: 1.8;
+text-align: justify;
+}
 
-        .i-column {
-            flex: 1;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-        }
+.i-column {
+flex: 1;
+display: flex;
+align-items: flex-start;
+justify-content: center;
+}
 
-        .i-image {
-            width: 100%;
-            max-width: 500px;
-        }
+.i-image {
+width: 100%;
+max-width: 500px;
+}
 
-        .i-image img {
-            width: 100%;
-            height: auto;
-        }
+.i-image img {
+width: 100%;
+height: auto;
+}
 
 
  .column1 {

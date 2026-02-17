@@ -1,17 +1,18 @@
 body {
-            font-family: 'EB Garamond', Georgia, serif;
-            background-color: #ffffff;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+font-family: 'EB Garamond', Georgia, serif;
+background-color: #ffffff;
+min-height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
 .h1 {
-            font-size: 3em;
-            font-weight: 400;
-            letter-spacing: 2px;
-            color: #000;
-            font-variant: small-caps;
-        }
+font-size: 3em;
+font-weight: 400;
+letter-spacing: 2px;
+color: #000;
+font-variant: small-caps;
+}
 
 

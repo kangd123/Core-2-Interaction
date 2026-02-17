@@ -50,23 +50,23 @@
  text-align: justify;
 }
 
-       .full-section {
-            margin-top: 60px;
-            max-width: 1400px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+.full-section {
+margin-top: 60px;
+max-width: 1400px;
+margin-left: auto;
+margin-right: auto;
+}
 
-        .full-image {
-            width: 100%;
-            height: auto;
-            display: block;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            margin-bottom: 30px;
-        }
+.full-image {
+width: 100%;
+height: auto;
+display: block;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+margin-bottom: 30px;
+}
 
-        .full-text {
-            font-size: 14px;
-            line-height: 1.8;
-            text-align: justify;
-        }
+.full-text {
+font-size: 14px;
+line-height: 1.8;
+text-align: justify;
+}
