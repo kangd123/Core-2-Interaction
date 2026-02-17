@@ -1,0 +1,38 @@
+body {
+            background-color: #000000;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .top-image {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .top-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .bottom-row {
+            display: flex;
+            gap: 60px;
+            width: 100%;
+            max-width: 1200px;
+            justify-content: center;
+        }
+
+        .bottom-image {
+            flex: 1;
+            max-width: 450px;
+        }
+
+        .bottom-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
