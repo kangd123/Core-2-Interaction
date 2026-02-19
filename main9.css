@@ -8,8 +8,8 @@ position: relative;
 
  .text-column {
 flex: 1;
-font-size: 14px;
-line-height: 1.8;
+font-size: 20px;
+line-height: 2.0;
 letter-spacing: 0.5px;
 }
 
@@ -23,27 +23,16 @@ margin: 0 auto;
 
 .text-column {
 flex: 1;
-font-size: 14px;
-line-height: 1.9;
+font-size: 20px;
+line-height: 2.0;
 letter-spacing: 0.4px;
-}
-
-.image-column {
-flex: 0 0 auto;
-width: 400px;
-}
-
-.image-column img {
-width: 100%;
-height: auto;
-display: block;
 }
 
 .bottom-section {
 max-width: 1400px;
 margin: 50px auto 0;
-font-size: 14px;
-line-height: 1.9;
+font-size: 20px;
+line-height: 2.0;
 letter-spacing: 0.4px;
 }
 

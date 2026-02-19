@@ -19,8 +19,8 @@
 
 .left-column {
  flex: 1;
- font-size: 14px;
- line-height: 1.8;
+ font-size: 20px;
+ line-height: 2.0;
  text-align: justify;
 }
 
@@ -38,15 +38,15 @@
 
 .right-column {
  flex: 1;
- font-size: 14px;
- line-height: 1.8;
+ font-size: 20px;
+ line-height: 2.0;
  text-align: justify;
 }
 
 .bottom-text {
  margin-top: 20px;
- font-size: 14px;
- line-height: 1.8;
+ font-size: 20px;
+ line-height: 2.0;
  text-align: justify;
 }
 
@@ -70,8 +70,8 @@ align-items: flex-start;
 
 .text-column {
 flex: 1;
-font-size: 14px;
-line-height: 1.8;
+font-size: 20px;
+line-height: 2.0;
 text-align: justify;
  }
 
@@ -94,8 +94,8 @@ height: auto;
 
 .text-column2{
 flex: 1;
-font-size: 14px;
-line-height: 1.8;
+font-size: 20px;
+line-height: 2.0;
 text-align: justify;
 }
 
@@ -119,15 +119,15 @@ height: auto;
 
  .column1 {
  flex: 1;
- font-size: 14px;
- line-height: 1.8;
+ font-size: 20px;
+ line-height: 2.0;
  text-align: justify;
 }
 
 
 .column2 {
  flex: 1;
- font-size: 14px;
- line-height: 1.8;
+ font-size: 20px;
+ line-height: 2.0;
  text-align: justify;
 }

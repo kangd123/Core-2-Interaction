@@ -6,9 +6,32 @@ padding: 40px 20px;
 position: relative;
 }
 
+.text-column {
+    text-align: center;
+}
+
+.story-title {
+    font-size: 50px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.author-name {
+    font-size: 25px;
+    font-style: italic;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #666;
+}
+
+.story-text {
+    margin-top: 40px;
+}
+
  .text-column {
 flex: 1;
-font-size: 14px;
-line-height: 1.8;
+font-size: 20px;
+line-height: 2.0;
 letter-spacing: 0.5px;
 }

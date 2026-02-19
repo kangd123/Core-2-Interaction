@@ -8,7 +8,7 @@ position: relative;
 
  .text-column {
 flex: 1;
-font-size: 14px;
-line-height: 1.8;
+font-size: 20px;
+line-height: 2.0;
 letter-spacing: 0.5px;
 }

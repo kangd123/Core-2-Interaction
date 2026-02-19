@@ -10,12 +10,19 @@ body {
         .top-image {
             width: 100%;
             max-width: 450px;
+            overflow: hidden;
+            cursor: pointer;
         }
 
         .top-image img {
             width: 100%;
             height: auto;
             display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .top-image:hover img {
+            transform: translateY(-5px);
         }
 
         .bottom-row {
@@ -29,10 +36,17 @@ body {
         .bottom-image {
             flex: 1;
             max-width: 450px;
+            overflow: hidden;
+            cursor: pointer;
         }
 
         .bottom-image img {
             width: 100%;
             height: auto;
             display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .bottom-image:hover img {
+            transform: translateY(-5px);
         }
