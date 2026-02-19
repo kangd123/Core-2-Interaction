@@ -1,52 +1,52 @@
 body {
-            background-color: #000000;
-            padding: 60px 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 60px;
-        }
+ background-color: #000000;
+ padding: 60px 40px;
+ display: flex;
+ flex-direction: column;
+align-items: center;
+ gap: 60px;
+}
 
-        .top-image {
-            width: 100%;
-            max-width: 450px;
-            overflow: hidden;
-            cursor: pointer;
-        }
+.top-image {
+ width: 100%;
+ max-width: 450px;
+ overflow: hidden;
+ cursor: pointer;
+}
 
-        .top-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-            transition: transform 0.3s ease;
-        }
+.top-image img {
+ width: 100%;
+ height: auto;
+ display: block;
+ transition: transform 0.3s ease;
+}
 
-        .top-image:hover img {
-            transform: translateY(-5px);
-        }
+.top-image:hover img {
+ transform: translateY(-5px);
+}
 
-        .bottom-row {
-            display: flex;
-            gap: 60px;
-            width: 100%;
-            max-width: 1200px;
-            justify-content: center;
-        }
+.bottom-row {
+ display: flex;
+ gap: 60px;
+ width: 100%;
+ max-width: 1200px;
+ justify-content: center;
+}
 
-        .bottom-image {
-            flex: 1;
-            max-width: 450px;
-            overflow: hidden;
-            cursor: pointer;
-        }
+.bottom-image {
+ flex: 1;
+ max-width: 450px;
+ overflow: hidden;
+ cursor: pointer;
+}
 
-        .bottom-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-            transition: transform 0.3s ease;
-        }
+.bottom-image img {
+ width: 100%;
+ height: auto;
+ display: block;
+ transition: transform 0.3s ease;
+}
 
-        .bottom-image:hover img {
-            transform: translateY(-5px);
-        }
+.bottom-image:hover img {
+ transform: translateY(-5px);
+}
