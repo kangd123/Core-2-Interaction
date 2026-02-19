@@ -50,6 +50,12 @@
  text-align: justify;
 }
 
+.full-text {
+font-size: 20px;
+line-height: 2.0;
+text-align: justify;
+}
+
 .full-section {
 margin-top: 60px;
 max-width: 1400px;
@@ -65,8 +71,12 @@ box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 margin-bottom: 30px;
 }
 
-.full-text {
-font-size: 20px;
-line-height: 2.0;
-text-align: justify;
+.full-image {
+    transition: all 0.5s ease;
+    filter: grayscale(30%);
+}
+
+.full-section:hover .full-image {
+    filter: grayscale(0%);
+    transform: scale(1.03);
 }

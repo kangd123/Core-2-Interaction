@@ -61,6 +61,7 @@ height: auto;
 border: 1px solid #ddd;
 }
 
+
         
 .second-section {
 display: flex;
@@ -117,6 +118,16 @@ height: auto;
 }
 
 
+.top-image-section img,
+.img-image img {
+    transition: transform 0.4s ease;
+}
+
+.top-image-section:hover img,
+.img-image:hover img {
+    transform: scale(1.05) rotate(2deg);
+}
+
  .column1 {
  flex: 1;
  font-size: 20px;
@@ -131,3 +142,4 @@ height: auto;
  line-height: 2.0;
  text-align: justify;
 }
+
