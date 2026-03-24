@@ -55,3 +55,8 @@ nav a:hover {
   object-fit: cover;
   object-position: top;
 }
+
+.player:hover{
+ background:#ffffff;
+ color:#aaa;
+}
