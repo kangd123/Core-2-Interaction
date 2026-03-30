@@ -1,59 +1,97 @@
-* {
+* { 
+  box-sizing: border-box; 
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-}
+} 
 
-body {
-  background: #f0f0f0;
-  font-family: 'Bebas Neue', sans-serif;
-}
+input[type="radio"] { display: none; }
  
-header {
-  background: #242f76;
-  padding: 28px;
-  text-align: center;
+body {
+  background: #0a0f1a;
+  font-family: 'Bebas Neue', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
 }
  
 h1 {
-  font-size: 2rem;
-  font-weight: 900;
-  letter-spacing: 3px;
-  color: #f0f0f0;
+  font-size: 64px;
+  letter-spacing: 10px;
+  margin-bottom: 40px;
 }
  
-.grid {
+.stage {
+  width: 400px;
+  height: 300px;
   display: flex;
-  gap: 40px;
-  padding: 40px;
-  flex-wrap: wrap;
+  align-items: flex-end;
   justify-content: center;
+  margin-bottom: 40px;
 }
  
-.player {
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  background: #ccc;
+.player-display {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+ 
+#p1:checked ~ .stage .d1,
+#p2:checked ~ .stage .d2,
+#p3:checked ~ .stage .d3 { display: flex; }
+ 
+.player-display img {
+  height: 240px;
+  width: auto;
+  object-fit: contain;
+  object-position: top;
+}
+ 
+.player-name {
+  font-size: 20px;
+  letter-spacing: 4px;
+  color: #f0b429;
+  margin-bottom: 8px;
+}
+ 
+.bar {
+  display: flex;
+  gap: 10px;
+}
+ 
+label {
+  width: 100px;
+  height: 120px;
+  display: block;
+  cursor: pointer;
+  border: 2px solid #333;
   overflow: hidden;
 }
  
-.player img {
+label img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: top;
-} 
-
-.player:hover{
- background:#ffffff;
- color:#aaa;
-} 
+  filter: brightness(0.6);
+}
+ 
+label:hover img { filter: brightness(1); }
+ 
+#p1:checked ~ .bar .l1,
+#p2:checked ~ .bar .l2,
+#p3:checked ~ .bar .l3 { border-color: #f0b429; }
+ 
+#p1:checked ~ .bar .l1 img,
+#p2:checked ~ .bar .l2 img,
+#p3:checked ~ .bar .l3 img { filter: brightness(1); }
 
 .ball {
   text-align: center;
   padding: 40px;
-  margin-top: 250px;
+  margin-top: 80px;
 }
  
 .ball img {

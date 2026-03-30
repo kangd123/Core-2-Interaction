@@ -5,16 +5,39 @@
     <title>GAME</title>
     <link rel="stylesheet" href="a3.css"> 
 </head>
+
 <body> 
-
-<header>
-<h1>CHOOSE YOUR NBA PLAYER</h1> 
-</header>
-
-<div class="grid">
-  <div class="player"><img src="nikola jokic.png" alt="Nicola Jokic"></div>
-  <div class="player"><img src="antman.png" alt="Anthony Edwards"></div>
-  <div class="player"><img src="curry.png" alt="Stephen Curry"></div>
+<input type="radio" name="player" id="p1" checked>
+<input type="radio" name="player" id="p2">
+<input type="radio" name="player" id="p3">
+ 
+<h1>CHOOSE YOUR NBA PLAYER</h1>
+ 
+<div class="stage">
+  <div class="player-display d1">
+    <div class="player-name">THE JOKER</div>
+    <img src="joker.jpg" alt="Jokić">
+  </div>
+  <div class="player-display d2">
+    <div class="player-name">ANTMAN</div>
+    <img src="antmann.png" alt="Edwards">
+  </div>
+  <div class="player-display d3">
+    <div class="player-name">CHEF CURRY</div>
+    <img src="chef.jpg" alt="Curry">
+  </div>
+</div>
+ 
+<div class="bar">
+  <label class="l1" for="p1">
+    <img src="nikola jokic.png" alt="Jokić">
+  </label>
+  <label class="l2" for="p2">
+    <img src="antman.png" alt="Edwards">
+  </label>
+  <label class="l3" for="p3">
+    <img src="curry.png" alt="Curry">
+  </label>
 </div>
  
 <div class="ball">
