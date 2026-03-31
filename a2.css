@@ -6,11 +6,16 @@
 
 body {
   background: #f0f0f0;
+  background-image:url('ESPN_Logo_STILL.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   font-family: 'Bebas Neue', sans-serif;
 }
  
 header {
-  background: #ff0000;
+  background: #580202;
   padding: 28px;
   text-align: center;
 }
@@ -34,7 +39,7 @@ h1 {
   width: 160px;
   height: 160px;
   border-radius: 50%;
-  background: #ccc;
+  background: #9d7a7a;
   overflow: hidden;
 }
  
@@ -53,7 +58,7 @@ h1 {
 .ball {
   text-align: center;
   padding: 40px;
-  margin-top: 250px;
+  margin-top: 200px;
 }
  
 .ball img {
