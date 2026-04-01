@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lebron James</title>
+</head> 
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+  body {
+    background: white;
+    font-family: 'Roboto Condensed', sans-serif;
+  }
+ 
+  .card {
+    width: 860px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+  }
+ 
+  .top {
+    background: #552583;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+    overflow: hidden;
+    height: 220px;
+  }
+ 
+  .team-logo {
+    position: absolute;
+    right: 30px; top: 50%;
+    transform: translateY(-50%);
+    height: 160px;
+    opacity: 0.15;
+  }
+ 
+  .player-img {
+    height: 220px;
+    width: auto;
+    object-fit: contain;
+    object-position: bottom;
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+  }
+ 
+  .player-info {
+    padding: 24px 30px;
+    position: relative;
+    z-index: 1;
+  }
+ 
+  .player-meta {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.65);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+ 
+  .player-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 52px;
+    font-weight: 700;
+    color: white;
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+ 
+  .bottom {
+    background: white;
+    border-top: 4px solid #FDB927;
+    display: flex;
+  }
+ 
+  .stats {
+    display: flex;
+    border-right: 2px solid #eee;
+  }
+ 
+  .stat {
+    padding: 16px 28px;
+    border-right: 1px solid #eee;
+    text-align: center;
+  }
+ 
+  .stat:last-child { border-right: none; }
+ 
+  .stat-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #999;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+ 
+  .stat-value {
+    font-family: 'Oswald', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: #111;
+  }
+ 
+  .bio {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+ 
+  .bio-cell {
+    padding: 10px 16px;
+    border-right: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+  }
+ 
+  .bio-cell:nth-child(3),
+  .bio-cell:nth-child(6) { border-right: none; }
+ 
+  .bio-cell:nth-child(4),
+  .bio-cell:nth-child(5),
+  .bio-cell:nth-child(6) { border-bottom: none; }
+ 
+  .bio-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #999;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+ 
+  .bio-value {
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #111;
+  }
+</style>
+</head>
+<body>
+ 
+<div class="card">
+  <div class="top">
+    <img class="team-logo" src="https://cdn.nba.com/logos/nba/1610612747/global/L/logo.svg" alt="Lakers Logo">
+    <img class="player-img" src="lebron.png" alt="LeBron James">
+    <div class="player-info">
+      <div class="player-meta">Los Angeles Lakers   #23   Forward</div>
+      <div class="player-name">LeBron<br>James</div>
+    </div>
+  </div>
+ 
+  <div class="bottom">
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">PPG</div>
+        <div class="stat-value">20.9</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">RPG</div>
+        <div class="stat-value">6.0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">APG</div>
+        <div class="stat-value">6.9</div>
+      </div>
+    </div>
+ 
+    <div class="bio">
+      <div class="bio-cell">
+        <div class="bio-label">Height</div>
+        <div class="bio-value">6'9" (2.06m)</div>
+      </div>
+      <div class="bio-cell">
+        <div class="bio-label">Weight</div>
+        <div class="bio-value">250lb (113kg)</div>
+      </div>
+      <div class="bio-cell">
+        <div class="bio-label">Country</div>
+        <div class="bio-value">USA</div>
+      </div>
+      <div class="bio-cell">
+        <div class="bio-label">Age</div>
+        <div class="bio-value">41 years</div>
+      </div>
+      <div class="bio-cell">
+        <div class="bio-label">Birthdate</div>
+        <div class="bio-value">December 30, 1984</div>
+      </div>
+      <div class="bio-cell">
+        <div class="bio-label">Draft</div>
+        <div class="bio-value">2003 R1 Pick 1</div>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+</body>
+</html>

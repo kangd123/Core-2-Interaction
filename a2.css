@@ -14,19 +14,6 @@ body {
   font-family: 'Bebas Neue', sans-serif;
 }
  
-header {
-  background: #580202;
-  padding: 28px;
-  text-align: center;
-}
- 
-h1 {
-  font-size: 2rem;
-  font-weight: 900;
-  letter-spacing: 3px;
-  color: #f0f0f0;
-}
- 
 .grid {
   display: flex;
   gap: 40px;
@@ -39,8 +26,8 @@ h1 {
   width: 160px;
   height: 160px;
   border-radius: 50%;
-  background: #9d7a7a;
   overflow: hidden;
+  position: relative;
 }
  
 .player img {
@@ -49,6 +36,19 @@ h1 {
   object-fit: cover;
   object-position: top;
 } 
+
+.player::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.25) 0%,
+    rgba(255,255,255,0) 50%,
+    rgba(255,255,255,0.1) 100%
+  );
+  pointer-events: none;
+}
 
 .player:hover{
  background:#ffffff;

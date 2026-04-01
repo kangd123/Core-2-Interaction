@@ -7,19 +7,94 @@
 </head>
 <body> 
 
-<header>
-<h1>NBA PLAYERS GALLERY</h1> 
-</header>
-
 <div class="grid">
- <div class="player"><img src="sga.png" alt="Shai Gilgeous-Alexander"></div>
-  <div class="player"><img src="luka.png" alt="Luka Doncic"></div>
-  <div class="player"><img src="wemby.png" alt="Victor Wembanyama"></div>
-</div>
  
+  <div class="player-col">
+    <div class="player"
+      onclick="
+        document.getElementById('sga-photos').style.display = 'flex';
+        document.getElementById('luka-photos').style.display = 'none';
+        document.getElementById('wemby-photos').style.display = 'none';
+      ">
+      <div class="card-inner">
+        <div class="card-front" style="background: #7dd8e8;">
+          <img src="sga.png" alt="SGA">
+        </div>
+        <div class="card-back">
+          <div class="name">Shai Gilgeous-Alexander</div>
+          <div class="divider"></div>
+          <div class="info">Oklahoma City Thunder</div>
+          <div class="info">6'6" (1.98m)</div>
+          <div class="info">Age: 26</div>
+        </div>
+      </div>
+    </div>
+    <div class="photo-section" id="sga-photos">
+      <img src="https://library.sportingnews.com/styles/twitter_card_120x120/s3/2025-05/GettyImages-2215327001%20%281%29.jpg?itok=S_3sfW8_" alt="SGA 1">
+      <img src="https://statico.profootballnetwork.com/wp-content/uploads/2025/05/23072057/watch-jaden-mcdaniels-shade-shai-gilgeous-alexander-foul-scaled.jpg" alt="SGA 2">
+      <img src="https://okcthunderwire.usatoday.com/gcdn/authoring/authoring-images/2025/06/17/SOKC/84238095007-usatsi-26471966.jpg?width=660&height=441&fit=crop&format=pjpg&auto=webp" alt="SGA 3">
+    </div>
+  </div>
+ 
+  <div class="player-col">
+    <div class="player"
+      onclick="
+        document.getElementById('sga-photos').style.display = 'none';
+        document.getElementById('luka-photos').style.display = 'flex';
+        document.getElementById('wemby-photos').style.display = 'none';
+      ">
+      <div class="card-inner">
+        <div class="card-front" style="background: #e8de7d;">
+          <img src="luka.png" alt="Luka">
+        </div>
+        <div class="card-back">
+          <div class="name">Luka Dončić</div>
+          <div class="divider"></div>
+          <div class="info">Los Angeles Lakers</div>
+          <div class="info">6'7" (2.01m)</div>
+          <div class="info">Age: 25</div>
+        </div>
+      </div>
+    </div>
+    <div class="photo-section" id="luka-photos">
+      <img src="https://fox2now.com/wp-content/uploads/sites/14/2026/03/69c764427fae22.29833448.jpeg?w=2560&h=1440&crop=1" alt="Luka 1">
+      <img src="https://ca-times.brightspotcdn.com/dims4/default/efe47cf/2147483647/strip/true/crop/2844x2122+0+282/resize/1200x895!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F6a%2Fad%2Ff2fc949f4aa6b53ea9bbb5cfc192%2F1547513-sp-nba-lakers-cavaliers-ajs-22.jpg" alt="Luka 2">
+      <img src="https://www.vmcdn.ca/f/files/shared/feeds/cp/2025/04/98c160680a98a7aa4b96afc86d7f15707fc21eee1dcff0894865fa3cfcd976f6.jpg;w=960" alt="Luka 3">
+    </div>
+  </div>
+ 
+  <div class="player-col">
+    <div class="player"
+      onclick="
+        document.getElementById('sga-photos').style.display = 'none';
+        document.getElementById('luka-photos').style.display = 'none';
+        document.getElementById('wemby-photos').style.display = 'flex';
+      ">
+      <div class="card-inner">
+        <div class="card-front" style="background: #a0a0a0;">
+          <img src="wemby.png" alt="Wemby">
+        </div>
+        <div class="card-back">
+          <div class="name">Victor Wembanyama</div>
+          <div class="divider"></div>
+          <div class="info">San Antonio Spurs</div>
+          <div class="info">7'4" (2.24m)</div>
+          <div class="info">Age: 21</div>
+        </div>
+      </div>
+    </div>
+    <div class="photo-section" id="wemby-photos">
+      <img src="https://media.cnn.com/api/v1/images/stellar/prod/gettyimages-2242700279.jpg?c=original&q=w_860,c_fill" alt="Wemby 1">
+      <img src="https://thesportsletter.com/wp-content/uploads/2023/10/1026-nba-800x600.jpeg" alt="Wemby 2">
+      <img src="https://assets.bwbx.io/images/users/iqjWHBFdfxIU/iUapxuJQi9Io/v0/-1x-1.webp" alt="Wemby 3">
+    </div>
+  </div> 
+</div>
+
 <div class="ball">
   <a href="ap2.html"><img src="real bb.png" alt="basketball"></a>
 </div>
+
  
 </body>
 </html>

@@ -8,7 +8,6 @@ input[type="radio"] { display: none; }
  
 body {
   background: #0a0f1a;
-  font-family: 'Bebas Neue', sans-serif;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -18,6 +17,7 @@ body {
 }
  
 h1 {
+  font-family: 'Teko', sans-serif;
   font-size: 64px;
   letter-spacing: 10px;
   margin-bottom: 40px;

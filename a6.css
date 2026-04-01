@@ -5,55 +5,105 @@
 }
 
 body {
-  background: #f0f0f0;
+  background: #353535;
   font-family: 'Bebas Neue', sans-serif;
-}
- 
-header {
-  background: #ff0000;
-  padding: 28px;
-  text-align: center;
-}
- 
-h1 {
-  font-size: 2rem;
-  font-weight: 900;
-  letter-spacing: 3px;
-  color: #f0f0f0;
 }
  
 .grid {
   display: flex;
-  gap: 40px;
-  padding: 40px;
-  flex-wrap: wrap;
+  gap: 60px;
   justify-content: center;
+  align-items: flex-start;
+}
+ 
+.player-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
  
 .player {
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  background: #ccc;
+  width: 220px;
+  height: 200px;
+  cursor: pointer;
+  perspective: 800px;
+}
+ 
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+ 
+.player:hover .card-inner {
+  transform: rotateY(180deg);
+}
+ 
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
   overflow: hidden;
 }
  
-.player img {
+.card-front img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: top;
-} 
-
-.player:hover{
- background:#ffffff;
- color:#aaa;
-} 
+}
+ 
+.card-back {
+  transform: rotateY(180deg);
+  background: #1a1a2e;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+}
+ 
+.card-back .name {
+  font-size: 16px;
+  font-weight: 900;
+  color: white;
+  text-align: center;
+  letter-spacing: 1px;
+}
+ 
+.card-back .info {
+  font-size: 12px;
+  font-weight: 400;
+  color: #aaa;
+  text-align: center;
+  letter-spacing: 1px;
+  font-family: Arial, sans-serif;
+}
+ 
+.photo-section {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+}
+ 
+.photo-section img {
+  width: 220px;
+  height: 180px;
+  object-fit: cover;
+  object-position: top;
+  background: white;
+}
 
 .ball {
   text-align: center;
   padding: 40px;
-  margin-top: 250px;
+  margin-top: 200px;
 }
  
 .ball img {
