@@ -147,5 +147,85 @@ body {
     padding-left: 12px; 
 }
 
+.scores { 
+    flex: 1; 
+    overflow-y: auto; 
+    padding: 20px 24px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 16px; 
+}
 
+.games-card {
+     background: #222529; 
+     border: 1px solid #2a2a2d; 
+     border-radius: 10px; 
+     overflow: hidden; 
+     max-width: 460px; 
+}
+
+.games-card-title { 
+    padding: 10px 16px; 
+    border-bottom: 1px solid #2a2a2d; 
+    font-size: 12px; 
+    font-weight: 700; 
+    color: #9b9b9b; 
+    text-transform: uppercase; 
+    letter-spacing: 0.07em; 
+    background: rgba(255,255,255,0.02); 
+}
+ 
+.game-row { 
+    background: #222529; 
+    border: 1px solid #2a2a2d; 
+    border-radius: 10px; 
+    padding: 16px; 
+    width: 100%; 
+    transition: border-color 0.1s; 
+}
+
+.game-row:hover { 
+    border-color: #444; 
+}
+
+.game-status { 
+    font-family: 'IBM Plex Mono', monospace; 
+    font-size: 11px; 
+    color: #616061; 
+    margin-bottom: 12px; 
+}
+
+.game-teams { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; 
+}
+
+.team-row { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+}
+
+.team-logo { 
+    width: 32px; 
+    height: 32px; 
+    object-fit: contain; 
+}
+
+.team-name { 
+    flex: 1; 
+    font-size: 15px; 
+    font-weight: 700; 
+    color: #fff; 
+}
+
+.game-score { 
+    font-family: 'IBM Plex Mono', monospace; 
+    font-size: 24px; 
+    font-weight: 600; 
+    color: #fff; 
+    min-width: 40px; 
+    text-align: right; 
+}
 
