@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SportsTalk — Live Score Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#1a1d21;--sidebar-bg:#19171d;--sidebar-hover:#27242c;--sidebar-active:#350d36;
+    --accent:#e01e5a;--accent2:#ecb22e;--accent3:#2eb67d;--accent4:#36c5f0;
+    --text-primary:#d1d2d3;--text-secondary:#9b9b9b;--text-dim:#616061;
+    --border:#2a2a2d;--card-bg:#222529;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text-primary);height:100vh;display:flex;overflow:hidden;}
+
+  /* SIDEBAR */
+  .sidebar{width:260px;min-width:260px;background:var(--sidebar-bg);display:flex;flex-direction:column;border-right:1px solid var(--border);overflow:hidden;}
+  .workspace-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+  .workspace-name{font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:#fff;letter-spacing:-.3px;}
+  .workspace-name span{color:var(--accent);}
+  .status-dot{width:8px;height:8px;background:var(--accent3);border-radius:50%;box-shadow:0 0 6px var(--accent3);animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.85)}}
+  .sidebar-scroll{flex:1;overflow-y:auto;padding:8px 0;}
+  .sidebar-scroll::-webkit-scrollbar{width:4px;}
+  .sidebar-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+  .section-label{font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--text-dim);text-transform:uppercase;padding:12px 18px 4px;}
+  .channel-item{display:flex;align-items:center;gap:8px;padding:5px 18px;cursor:pointer;font-size:14px;color:var(--text-secondary);transition:background .12s;}
+  .channel-item:hover{background:var(--sidebar-hover);color:var(--text-primary);}
+  .channel-item.active{background:var(--sidebar-active);color:#fff;}
+  .ch-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0;}
+  .badge{margin-left:auto;background:var(--accent);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;font-family:'IBM Plex Mono',monospace;}
+  .live-badge{margin-left:auto;background:var(--accent);color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;letter-spacing:.05em;animation:liveblink 1.5s infinite;}
+  @keyframes liveblink{0%,100%{opacity:1}50%{opacity:.5}}
+  .sidebar-footer{padding:12px 18px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;cursor:pointer;}
+  .user-avatar{width:30px;height:30px;background:linear-gradient(135deg,var(--accent),#ff6b9d);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+  .user-info .user-name{font-size:13px;font-weight:500;color:#fff;}
+  .user-info .user-status{font-size:11px;color:var(--text-dim);}
+
+  /* MAIN */
+  .main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+  .main-header{padding:12px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--bg);}
+  .main-header-left{display:flex;align-items:center;gap:12px;}
+  .channel-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff;}
+  .channel-desc{font-size:13px;color:var(--text-dim);border-left:1px solid var(--border);padding-left:12px;}
+  .header-actions{display:flex;gap:8px;align-items:center;}
+  .btn-icon{background:none;border:1px solid var(--border);color:var(--text-secondary);padding:5px 10px;border-radius:6px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;transition:all .15s;}
+  .btn-icon:hover{background:var(--card-bg);color:#fff;border-color:#444;}
+
+  /* CONTENT */
+  .content{flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:20px;scroll-behavior:smooth;}
+  .content::-webkit-scrollbar{width:4px;}
+  .content::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+
+  /* TICKER */
+  .ticker-bar{background:linear-gradient(90deg,#1b0a1c,#0f1620,#0a1b0f);border:1px solid var(--border);border-radius:8px;overflow:hidden;display:flex;align-items:center;flex-shrink:0;}
+  .ticker-label{background:var(--accent);color:#fff;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;padding:8px 14px;letter-spacing:.1em;white-space:nowrap;flex-shrink:0;}
+  .ticker-track{flex:1;overflow:hidden;padding:0 16px;}
+  .ticker-inner{display:flex;gap:40px;white-space:nowrap;animation:tickerScroll 32s linear infinite;}
+  @keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  .ticker-item{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;}
+  .ticker-item .sc{color:#fff;font-weight:600;}
+  .live-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 1.2s infinite;flex-shrink:0;}
+
+  /* DAY DIVIDER */
+  .day-divider{display:flex;align-items:center;gap:14px;color:var(--text-dim);font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;flex-shrink:0;}
+  .day-divider::before,.day-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+
+  /* MESSAGES */
+  .msg-group{display:flex;flex-direction:column;gap:2px;}
+  .msg-row{display:flex;gap:12px;padding:3px 6px;border-radius:6px;transition:background .1s;}
+  .msg-row:hover{background:rgba(255,255,255,.03);}
+  .msg-avatar{width:36px;height:36px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;margin-top:1px;}
+  .av-soccer{background:linear-gradient(135deg,#2eb67d,#1a8a52);}
+  .av-basket{background:linear-gradient(135deg,#ecb22e,#b88a1c);}
+  .av-baseball{background:linear-gradient(135deg,#36c5f0,#1a8ab8);}
+  .av-alert{background:linear-gradient(135deg,#e01e5a,#a0143e);}
+  .av-user{background:linear-gradient(135deg,var(--accent),#ff6b9d);font-size:13px;font-weight:700;}
+  .av-ai{background:linear-gradient(135deg,#6c5ce7,#a29bfe);font-size:14px;}
+  .msg-meta{display:flex;align-items:baseline;gap:8px;margin-bottom:4px;}
+  .msg-author{font-size:14px;font-weight:600;color:#fff;}
+  .msg-author.bot{color:var(--accent4);}
+  .msg-time{font-size:11px;color:var(--text-dim);font-family:'IBM Plex Mono',monospace;}
+  .app-tag{font-size:10px;background:rgba(54,197,240,.15);color:var(--accent4);border:1px solid rgba(54,197,240,.25);padding:1px 5px;border-radius:3px;font-weight:600;letter-spacing:.04em;}
+  .msg-body{flex:1;min-width:0;}
+  .msg-text{font-size:14px;color:var(--text-primary);line-height:1.6;margin-bottom:8px;word-break:break-word;}
+
+  /* CARDS */
+  .score-card{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;overflow:hidden;max-width:480px;}
+  .score-card:hover{border-color:#3a3a40;}
+  .score-card-header{padding:10px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(255,255,255,.02);}
+  .league-name{font-size:11px;font-weight:600;color:var(--text-dim);letter-spacing:.06em;text-transform:uppercase;}
+  .status-pill{font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;font-family:'IBM Plex Mono',monospace;letter-spacing:.05em;}
+  .status-pill.live{background:rgba(224,30,90,.2);color:var(--accent);border:1px solid rgba(224,30,90,.4);animation:liveblink 1.5s infinite;}
+  .status-pill.ft{background:rgba(97,96,97,.2);color:var(--text-dim);border:1px solid rgba(97,96,97,.3);}
+  .status-pill.soon{background:rgba(54,197,240,.15);color:var(--accent4);border:1px solid rgba(54,197,240,.3);}
+  .score-card-body{padding:16px;display:flex;align-items:center;gap:12px;}
+  .team-block{flex:1;text-align:center;}
+  .team-emblem{width:38px;height:38px;border-radius:50%;background:var(--border);margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+  .team-name{font-size:13px;font-weight:600;color:#fff;line-height:1.2;}
+  .score-center{text-align:center;padding:0 12px;}
+  .score-main{font-family:'IBM Plex Mono',monospace;font-size:32px;font-weight:600;color:#fff;letter-spacing:2px;line-height:1;}
+  .score-time-lbl{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);margin-top:4px;font-weight:600;}
+  .score-card-footer{padding:8px 16px;border-top:1px solid var(--border);display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .event-tag{font-size:11px;color:var(--text-dim);display:flex;align-items:center;gap:4px;}
+  .event-tag.goal{color:var(--accent3);}
+  .event-tag.card{color:var(--accent2);}
+
+  .multi-score-card{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;overflow:hidden;max-width:480px;}
+  .multi-score-header{padding:10px 16px;border-bottom:1px solid var(--border);font-size:12px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.07em;background:rgba(255,255,255,.02);display:flex;align-items:center;gap:8px;}
+  .multi-row{display:flex;align-items:center;padding:11px 16px;border-bottom:1px solid rgba(255,255,255,.04);gap:10px;transition:background .1s;}
+  .multi-row:last-child{border-bottom:none;}
+  .multi-row:hover{background:rgba(255,255,255,.03);}
+  .multi-time{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-dim);width:44px;flex-shrink:0;text-align:center;}
+  .multi-time.lt{color:var(--accent);}
+  .multi-teams{flex:1;display:flex;flex-direction:column;gap:3px;}
+  .mtr{font-size:13px;color:var(--text-primary);}
+  .mtr.win{color:#fff;font-weight:600;}
+  .msc{font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;color:#fff;text-align:right;width:20px;}
+  .mst{width:44px;text-align:center;}
+
+  .standing-card{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;overflow:hidden;max-width:480px;}
+  .standing-header{padding:10px 16px;border-bottom:1px solid var(--border);font-size:12px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.07em;background:rgba(255,255,255,.02);}
+  .standing-row{display:grid;grid-template-columns:28px 1fr 28px 28px 28px 28px 36px;align-items:center;padding:8px 16px;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;gap:4px;transition:background .1s;}
+  .standing-row:last-child{border-bottom:none;}
+  .standing-row:hover{background:rgba(255,255,255,.03);}
+  .standing-row.hr{color:var(--text-dim);font-size:11px;font-weight:600;border-bottom:1px solid var(--border);}
+  .pos{color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:11px;}
+  .tnm{font-weight:500;color:#fff;}
+  .pts{font-family:'IBM Plex Mono',monospace;font-weight:700;color:#fff;text-align:right;}
+  .num{font-family:'IBM Plex Mono',monospace;color:var(--text-dim);text-align:center;}
+  .pi{width:3px;height:18px;border-radius:2px;display:inline-block;margin-right:4px;vertical-align:middle;}
+  .ucl{background:var(--accent4)}.uel{background:var(--accent3)}.rel{background:var(--accent)}
+
+  /* REACTIONS */
+  .reactions{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
+  .reaction{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:3px 9px;font-size:12px;cursor:pointer;transition:all .12s;display:flex;align-items:center;gap:4px;color:var(--text-secondary);user-select:none;}
+  .reaction:hover{background:rgba(255,255,255,.1);color:#fff;}
+  .reaction.mine{background:rgba(54,197,240,.15);border-color:rgba(54,197,240,.35);color:var(--accent4);}
+  .thread-btn{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--text-dim);cursor:pointer;padding:2px 6px;border-radius:4px;transition:all .12s;margin-top:4px;}
+  .thread-btn:hover{background:rgba(255,255,255,.05);color:var(--accent4);}
+
+  /* AI RESPONSE */
+  .ai-card{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:14px 16px;max-width:560px;font-size:14px;line-height:1.65;color:var(--text-primary);}
+  .ai-card strong{color:#fff;}
+  .ai-tag{font-size:10px;color:var(--accent4);font-weight:700;letter-spacing:.06em;margin-bottom:8px;display:block;}
+
+  /* TYPING */
+  .typing-dots{display:flex;gap:4px;padding:4px 0;}
+  .typing-dots span{width:7px;height:7px;background:var(--text-dim);border-radius:50%;animation:bounce 1.2s infinite;}
+  .typing-dots span:nth-child(2){animation-delay:.2s;}
+  .typing-dots span:nth-child(3){animation-delay:.4s;}
+  @keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+
+  /* INPUT */
+  .input-area{padding:12px 24px 16px;border-top:1px solid var(--border);flex-shrink:0;}
+  .input-box{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;display:flex;flex-direction:column;overflow:hidden;transition:border-color .15s;}
+  .input-box:focus-within{border-color:#444;}
+  .input-field{padding:12px 14px;font-size:14px;color:var(--text-primary);background:transparent;border:none;outline:none;font-family:'DM Sans',sans-serif;resize:none;min-height:44px;max-height:120px;}
+  .input-field::placeholder{color:var(--text-dim);}
+  .input-toolbar{display:flex;align-items:center;padding:6px 10px;gap:4px;border-top:1px solid var(--border);}
+  .input-btn{background:none;border:none;color:var(--text-dim);padding:5px 7px;border-radius:4px;cursor:pointer;font-size:15px;transition:all .12s;}
+  .input-btn:hover{background:rgba(255,255,255,.06);color:#fff;}
+  .send-btn{margin-left:auto;background:var(--accent3);border:none;color:#fff;padding:6px 14px;border-radius:5px;cursor:pointer;font-size:12px;font-weight:600;font-family:'DM Sans',sans-serif;transition:all .15s;}
+  .send-btn:hover{background:#25a06b;}
+  .send-btn:disabled{opacity:.4;cursor:not-allowed;}
+
+  /* EMPTY */
+  .empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:12px;color:var(--text-dim);padding:40px;text-align:center;}
+  .empty-state .big{font-size:48px;margin-bottom:8px;}
+  .empty-state h3{font-family:'Syne',sans-serif;font-size:18px;color:var(--text-secondary);}
+  .empty-state p{font-size:14px;max-width:300px;line-height:1.6;}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="workspace-header">
+    <div class="workspace-name">Sports<span>Talk</span></div>
+    <div class="status-dot"></div>
+  </div>
+  <div class="sidebar-scroll">
+    <div class="section-label">Live Channels</div>
+    <div class="channel-item active" data-ch="epl" onclick="switchCh(this)">
+      <span class="ch-icon">⚽</span> Premier League
+      <span class="live-badge">LIVE</span>
+    </div>
+    <div class="channel-item" data-ch="nba" onclick="switchCh(this)">
+      <span class="ch-icon">🏀</span> NBA
+    </div>
+    <div class="channel-item" data-ch="mlb" onclick="switchCh(this)">
+      <span class="ch-icon">⚾</span> MLB
+      <span class="live-badge">LIVE</span>
+    </div>
+    <div class="section-label">Analysis</div>
+    <div class="channel-item" data-ch="tactics" onclick="switchCh(this)">
+      <span class="ch-icon">#</span> tactics
+    </div>
+    <div class="channel-item" data-ch="highlights" onclick="switchCh(this)">
+      <span class="ch-icon">#</span> highlights
+    </div>
+    <div class="section-label">Direct Messages</div>
+    <div class="channel-item" data-ch="scorebot" onclick="switchCh(this)">
+      <span style="width:8px;height:8px;background:var(--accent3);border-radius:50%;flex-shrink:0"></span> ScoreBot
+    </div>
+    <div class="channel-item" data-ch="statbot" onclick="switchCh(this)">
+      <span style="width:8px;height:8px;background:var(--accent2);border-radius:50%;flex-shrink:0"></span> StatBot
+    </div>
+  </div>
+  <div class="sidebar-footer" onclick="renameUser()">
+    <div class="user-avatar" id="uAvatar">Y</div>
+    <div class="user-info">
+      <div class="user-name" id="uName">You</div>
+      <div class="user-status">🟢 Active</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="main-header">
+    <div class="main-header-left">
+      <div class="channel-title" id="hTitle">⚽ Premier League</div>
+      <div class="channel-desc" id="hDesc">GW 34 · Live · 1,284 members</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon" id="notifBtn" onclick="toggleNotif(this)">🔔 Notifs</button>
+      <button class="btn-icon" onclick="renameUser()">⚙️ Settings</button>
+    </div>
+  </div>
+  <div class="content" id="feed"></div>
+  <div class="input-area">
+    <div class="input-box">
+      <textarea class="input-field" id="msgIn" rows="1"
+        placeholder="Message #premier-league..."
+        onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <div class="input-toolbar">
+        <button class="input-btn" onclick="wrapText('**')" title="Bold">𝐁</button>
+        <button class="input-btn" onclick="wrapText('_')" title="Italic">𝐼</button>
+        <button class="input-btn" onclick="addEmoji()" title="Emoji">😊</button>
+        <button class="input-btn" onclick="addAt()" title="Mention">@</button>
+        <button class="send-btn" id="sendBtn" onclick="sendMsg()">Send ↑</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── CONFIG ───
+const CH = {
+  epl:       { title:'⚽ Premier League', desc:'GW 34 · Live · 1,284 members',   ph:'Message #premier-league...',  sport:'soccer'     },
+  nba:       { title:'🏀 NBA',            desc:'Playoffs · Live · 2,091 members', ph:'Message #nba...',            sport:'basketball' },
+  mlb:       { title:'⚾ MLB',            desc:'Regular Season · 987 members',    ph:'Message #mlb...',            sport:'baseball'   },
+  tactics:   { title:'# tactics',         desc:'Tactical analysis · 543 members', ph:'Message #tactics...',        sport:'analysis'   },
+  highlights:{ title:'# highlights',      desc:'Goals & clips · 1,102 members',   ph:'Message #highlights...',     sport:'highlights' },
+  scorebot:  { title:'🤖 ScoreBot',       desc:'Live scores on demand',           ph:'Ask ScoreBot for scores...', sport:'bot'        },
+  statbot:   { title:'📊 StatBot',        desc:'Stats, standings & analysis',     ph:'Ask StatBot anything...',   sport:'bot'        },
+};
+
+let curCh = 'epl';
+let uName = 'You', uInit = 'Y';
+const history = {};
+Object.keys(CH).forEach(k => history[k] = []);
+
+// ─── BASE FEEDS ───
+const BASE = {
+epl: `
+<div class="ticker-bar"><div class="ticker-label">🔴 LIVE</div><div class="ticker-track"><div class="ticker-inner">
+  <div class="ticker-item"><div class="live-dot"></div>Man City <span class="sc">2</span>–<span class="sc">1</span> Arsenal <span>62′</span></div>
+  <div class="ticker-item"><div class="live-dot"></div>Liverpool <span class="sc">1</span>–<span class="sc">1</span> Tottenham <span>71′</span></div>
+  <div class="ticker-item">Chelsea <span class="sc">0</span>–<span class="sc">2</span> Newcastle <span style="color:var(--text-dim)">FT</span></div>
+  <div class="ticker-item"><div class="live-dot"></div>Everton <span class="sc">0</span>–<span class="sc">0</span> Fulham <span>45+2′</span></div>
+  <div class="ticker-item"><div class="live-dot"></div>Man City <span class="sc">2</span>–<span class="sc">1</span> Arsenal <span>62′</span></div>
+  <div class="ticker-item"><div class="live-dot"></div>Liverpool <span class="sc">1</span>–<span class="sc">1</span> Tottenham <span>71′</span></div>
+  <div class="ticker-item">Chelsea <span class="sc">0</span>–<span class="sc">2</span> Newcastle <span style="color:var(--text-dim)">FT</span></div>
+  <div class="ticker-item"><div class="live-dot"></div>Everton <span class="sc">0</span>–<span class="sc">0</span> Fulham <span>45+2′</span></div>
+</div></div></div>
+<div class="day-divider">Today · April 21, 2026</div>
+<div class="msg-group"><div class="msg-row">
+  <div class="msg-avatar av-soccer">⚽</div>
+  <div class="msg-body">
+    <div class="msg-meta"><span class="msg-author bot">ScoreBot</span><span class="app-tag">APP</span><span class="msg-time">8:03 PM</span></div>
+    <div class="msg-text">🔴 <strong>Live Update</strong> — Man City vs Arsenal (GW34)</div>
+    <div class="score-card">
+      <div class="score-card-header"><div class="league-name">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League · GW 34</div><div class="status-pill live">● LIVE</div></div>
+      <div class="score-card-body">
+        <div class="team-block"><div class="team-emblem">🔵</div><div class="team-name">Man City</div></div>
+        <div class="score-center"><div class="score-main">2 – 1</div><div class="score-time-lbl">62′</div></div>
+        <div class="team-block"><div class="team-emblem">🔴</div><div class="team-name">Arsenal</div></div>
+      </div>
+      <div class="score-card-footer">
+        <div class="event-tag goal">⚽ Haaland 38′</div>
+        <div class="event-tag goal">⚽ Saka 55′</div>
+        <div class="event-tag card">🟡 White 49′</div>
+      </div>
+    </div>
+    <div class="reactions">
+      <div class="reaction mine" onclick="toggleR(this)">🔵 <span>247</span></div>
+      <div class="reaction" onclick="toggleR(this)">🔴 <span>189</span></div>
+      <div class="reaction" onclick="toggleR(this)">🤯 <span>91</span></div>
+      <div class="reaction" onclick="toggleR(this)">⚽ <span>55</span></div>
+    </div>
+    <div class="thread-btn">💬 148 replies · 3 min ago</div>
+  </div>
+</div></div>
+<div class="msg-group"><div class="msg-row">
+  <div class="msg-avatar av-alert">🚨</div>
+  <div class="msg-body">
+    <div class="msg-meta"><span class="msg-author bot">GoalAlert</span><span class="app-tag">APP</span><span class="msg-time">8:07 PM</span></div>
+    <div class="msg-text">⚽ <strong>GOAL!</strong> Liverpool 1–1 Tottenham — <strong>Son Heung-min</strong> (71′) · Brilliant solo run, composed left-foot finish!</div>
+    <div class="reactions">
+      <div class="reaction" onclick="toggleR(this)">🇰🇷 <span>512</span></div>
+      <div class="reaction" onclick="toggleR(this)">🔥 <span>389</span></div>
+      <div class="reaction mine" onclick="toggleR(this)">👑 <span>201</span></div>
+      <div class="reaction" onclick="toggleR(this)">😱 <span>145</span></div>
+    </div>
+    <div class="thread-btn">💬 304 replies · just now</div>
+  </div>
+</div></div>
+<div class="msg-group"><div class="msg-row">
+  <div class="msg-avatar av-soccer">📋</div>
+  <div class="msg-body">
+    <div class="msg-meta"><span class="msg-author bot">FixtureBot</span><span class="app-tag">APP</span><span class="msg-time">7:45 PM</span></div>
+    <div class="msg-text">Here's the full GW34 match overview for today:</div>
+    <div class="multi-score-card">
+      <div class="multi-score-header">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League · GW 34</div>
+      <div class="multi-row"><div class="multi-time lt">62′</div><div class="multi-teams"><div class="mtr win">🔵 Man City</div><div class="mtr">🔴 Arsenal</div></div><div style="display:flex;flex-direction:column;gap:3px;align-items:flex-end"><div class="msc">2</div><div class="msc">1</div></div><div class="mst"><span class="status-pill live">LIVE</span></div></div>
+      <div class="multi-row"><div class="multi-time lt">71′</div><div class="multi-teams"><div class="mtr">🔴 Liverpool</div><div class="mtr win">⚪ Tottenham</div></div><div style="display:flex;flex-direction:column;gap:3px;align-items:flex-end"><div class="msc">1</div><div class="msc">1</div></div><div class="mst"><span class="status-pill live">LIVE</span></div></div>
+      <div class="multi-row"><div class="multi-time">FT</div><div class="multi-teams"><div class="mtr">🔵 Chelsea</div><div class="mtr win">⚫ Newcastle</div></div><div style="display:flex;flex-direction:column;gap:3px;align-items:flex-end"><div class="msc">0</div><div class="msc">2</div></div><div class="mst"><span class="status-pill ft">FT</span></div></div>
+      <div class="multi-row"><div class="multi-time lt">45+2′</div><div class="multi-teams"><div class="mtr">🔵 Everton</div><div class="mtr">⚪ Fulham</div></div><div style="display:flex;flex-direction:column;gap:3px;align-items:flex-end"><div class="msc">0</div><div class="msc">0</div></div><div class="mst"><span class="status-pill live">LIVE</span></div></div>
+      <div class="multi-row"><div class="multi-time" style="color:var(--accent4)">21:00</div><div class="multi-teams"><div class="mtr">🔴 Man Utd</div><div class="mtr">🔴 Bournemouth</div></div><div style="display:flex;flex-direction:column;gap:3px;align-items:flex-end"><div class="msc" style="color:var(--text-dim)">–</div><div class="msc" style="color:var(--text-dim)">–</div></div><div class="mst"><span class="status-pill soon">Soon</span></div></div>
+    </div>
+    <div class="reactions"><div class="reaction mine" onclick="toggleR(this)">👀 <span>88</span></div><div class="reaction" onclick="toggleR(this)">📊 <span>42</span></div></div>
+  </div>
+</div></div>
+<div class="msg-group"><div class="msg-row">
+  <div class="msg-avatar av-soccer">📊</div>
+  <div class="msg-body">
+    <div class="msg-meta"><span class="msg-author bot">StatBot</span><span class="app-tag">APP</span><span class="msg-time">7:45 PM</span></div>
+    <div class="msg-text">Current <strong>Premier League Standings</strong> (after GW33):</div>
+    <div class="standing-card">
+      <div class="standing-header">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League Table</div>
+      <div class="standing-row hr"><div></div><div>Club</div><div style="text-align:center">P</div><div style="text-align:center">W</div><div style="text-align:center">D</div><div style="text-align:center">L</div><div style="text-align:right">Pts</div></div>
+      <div class="standing-row"><div class="pos">1</div><div class="tnm"><span class="pi ucl"></span>Arsenal</div><div class="num">33</div><div class="num">22</div><div class="num">7</div><div class="num">4</div><div class="pts">73</div></div>
+      <div class="standing-row"><div class="pos">2</div><div class="tnm"><span class="pi ucl"></span>Man City</div><div class="num">33</div><div class="num">21</div><div class="num">8</div><div class="num">4</div><div class="pts">71</div></div>
+      <div class="standing-row"><div class="pos">3</div><div class="tnm"><span class="pi ucl"></span>Liverpool</div><div class="num">33</div><div class="num">20</div><div class="num">9</div><div class="num">4</div><div class="pts">69</div></div>
+      <div class="standing-row"><div class="pos">4</div><div class="tnm"><span class="pi ucl"></span>Tottenham</div><div class="num">33</div><div class="num">18</div><div class="num">6</div><div class="num">9</div><div class="pts">60</div></div>
+      <div class="standing-row"><div class="pos">5</div><div class="tnm"><span class="pi uel"></span>Newcastle</div><div class="num">33</div><div class="num">17</div><div class="num">7</div><div class="num">9</div><div class="pts">58</div></div>
+      <div class="standing-row"><div class="pos" style="color:var(--accent)">18</div><div class="tnm"><span class="pi rel"></span>Luton</div><div class="num">33</div><div class="num">5</div><div class="num">7</div><div class="num">21</div><div class="pts" style="color:var(--accent)">22</div></div>
+    </div>
+    <div class="reactions"><div class="reaction" onclick="toggleR(this)">📈 <span>63</span></div><div class="reaction mine" onclick="toggleR(this)">🏆 <span>38</span></div></div>
+  </div>
+</div></div>`,
+
+nba: `<div id="nba-feed"><div class="empty-state"><div class="big">🏀</div><h3>Loading NBA games...</h3><p>Fetching real scores from Ball Don't Lie API</p></div></div>`,
+
+mlb: `
+<div class="ticker-bar"><div class="ticker-label">🔴 LIVE</div><div class="ticker-track"><div class="ticker-inner">
+  <div class="ticker-item"><div class="live-dot"></div>Yankees <span class="sc">4</span>–<span class="sc">2</span> Red Sox <span>7th Inn</span></div>
+  <div class="ticker-item"><div class="live-dot"></div>Dodgers <span class="sc">6</span>–<span class="sc">5</span> Giants <span>9th Inn</span></div>
+  <div class="ticker-item">Mets <span class="sc">3</span>–<span class="sc">7</span> Braves <span style="color:var(--text-dim)">Final</span></div>
+  <div class="ticker-item"><div class="live-dot"></div>Yankees <span class="sc">4</span>–<span class="sc">2</span> Red Sox <span>7th Inn</span></div>
+  <div class="ticker-item"><div class="live-dot"></div>Dodgers <span class="sc">6</span>–<span class="sc">5</span> Giants <span>9th Inn</span></div>
+  <div class="ticker-item">Mets <span class="sc">3</span>–<span class="sc">7</span> Braves <span style="color:var(--text-dim)">Final</span></div>
+</div></div></div>
+<div class="day-divider">Today · April 21, 2026</div>
+<div class="msg-group"><div class="msg-row">
+  <div class="msg-avatar av-baseball">⚾</div>
+  <div class="msg-body">
+    <div class="msg-meta"><span class="msg-author bot">ScoreBot</span><span class="app-tag">APP</span><span class="msg-time">7:55 PM</span></div>
+    <div class="msg-text">🔴 <strong>Live Update</strong> — Yankees vs Red Sox</div>
+    <div class="score-card">
+      <div class="score-card-header"><div class="league-name">⚾ MLB · Regular Season 2026</div><div class="status-pill live">● LIVE</div></div>
+      <div class="score-card-body">
+        <div class="team-block"><div class="team-emblem">⚾</div><div class="team-name">NY Yankees</div></div>
+        <div class="score-center"><div class="score-main">4 – 2</div><div class="score-time-lbl">7th Inn</div></div>
+        <div class="team-block"><div class="team-emblem">🔴</div><div class="team-name">Boston Red Sox</div></div>
+      </div>
+      <div class="score-card-footer">
+        <div class="event-tag goal">⚾ Judge HR 4th</div>
+        <div class="event-tag goal">⚾ Devers 2B 6th</div>
+      </div>
+    </div>
+    <div class="reactions">
+      <div class="reaction mine" onclick="toggleR(this)">⚾ <span>178</span></div>
+      <div class="reaction" onclick="toggleR(this)">🔥 <span>95</span></div>
+    </div>
+  </div>
+</div></div>`
+};
+
+function emptyBase(ch) {
+  return `<div class="empty-state"><div class="big">${CH[ch]?.title?.match(/^(\S+)/)?.[1]||'#'}</div><h3>${CH[ch]?.title||ch}</h3><p>Start the conversation! Ask the AI anything about sports — scores, stats, analysis, or highlights.</p></div>`;
+}
+
+// ─── RENDER ───
+function renderFeed() {
+  const feed = document.getElementById('feed');
+  feed.innerHTML = BASE[curCh] || emptyBase(curCh);
+  history[curCh].forEach(m => feed.appendChild(buildMsgEl(m)));
+  feed.scrollTop = feed.scrollHeight;
+}
+
+function buildMsgEl(m) {
+  const el = document.createElement('div');
+  el.className = 'msg-group';
+  const t = new Date(m.ts).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+  if (m.role==='user') {
+    el.innerHTML = `<div class="msg-row"><div class="msg-avatar av-user">${uInit}</div><div class="msg-body"><div class="msg-meta"><span class="msg-author">${esc(uName)}</span><span class="msg-time">${t}</span></div><div class="msg-text">${esc(m.text)}</div></div></div>`;
+  } else {
+    const sp = CH[curCh]?.sport||'soccer';
+    const avc = sp==='basketball'?'av-basket':sp==='baseball'?'av-baseball':'av-ai';
+    el.innerHTML = `<div class="msg-row"><div class="msg-avatar ${avc}">${m.icon}</div><div class="msg-body"><div class="msg-meta"><span class="msg-author bot">${esc(m.name)}</span><span class="app-tag">APP</span><span class="msg-time">${t}</span></div><div class="ai-card"><span class="ai-tag">AI RESPONSE</span>${m.html}</div></div></div>`;
+  }
+  return el;
+}
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ─── CHANNEL SWITCH ───
+function switchCh(el) {
+  document.querySelectorAll('.channel-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  curCh = el.dataset.ch;
+  const c = CH[curCh];
+  document.getElementById('hTitle').textContent = c.title;
+  document.getElementById('hDesc').textContent = c.desc;
+  document.getElementById('msgIn').placeholder = c.ph;
+  renderFeed();
+  // Live API fetch for NBA
+  if (curCh === 'nba') fetchNBAGames();
+}
+
+// ─── SEND ───
+async function sendMsg() {
+  const inp = document.getElementById('msgIn');
+  const txt = inp.value.trim();
+  if (!txt) return;
+
+  history[curCh].push({role:'user', text:txt, ts:Date.now()});
+  const feed = document.getElementById('feed');
+  const es = feed.querySelector('.empty-state');
+  if (es) { const p = es.closest('.msg-group'); if(p) p.remove(); else es.remove(); }
+  feed.appendChild(buildMsgEl(history[curCh].at(-1)));
+  inp.value = ''; inp.style.height = 'auto';
+  feed.scrollTop = feed.scrollHeight;
+
+  // Bot info
+  const sp = CH[curCh]?.sport||'soccer';
+  const botName = curCh==='scorebot'?'ScoreBot':curCh==='statbot'?'StatBot':sp==='basketball'?'NBABot':sp==='baseball'?'MLBBot':sp==='analysis'?'TacticsBot':'SportsTalk AI';
+  const botIcon = curCh==='scorebot'?'🤖':curCh==='statbot'?'📊':sp==='basketball'?'🏀':sp==='baseball'?'⚾':sp==='analysis'?'📋':sp==='highlights'?'🎬':'⚽';
+
+  // Typing
+  const tyEl = document.createElement('div');
+  tyEl.className = 'msg-group';
+  const avc = sp==='basketball'?'av-basket':sp==='baseball'?'av-baseball':'av-ai';
+  tyEl.innerHTML = `<div class="msg-row"><div class="msg-avatar ${avc}">${botIcon}</div><div class="msg-body"><div class="msg-meta"><span class="msg-author bot">${botName}</span><span class="app-tag">APP</span></div><div class="typing-dots"><span></span><span></span><span></span></div></div></div>`;
+  feed.appendChild(tyEl);
+  feed.scrollTop = feed.scrollHeight;
+  document.getElementById('sendBtn').disabled = true;
+
+  try {
+    const sys = buildSys();
+    const msgs = buildMsgs(txt);
+    const r = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:sys,messages:msgs})
+    });
+    const d = await r.json();
+    const raw = d.content?.map(b=>b.text||'').join('')||'Sorry, something went wrong.';
+    const html = fmtHtml(raw);
+    tyEl.remove();
+    const botMsg = {role:'bot',html,name:botName,icon:botIcon,ts:Date.now()};
+    history[curCh].push(botMsg);
+    feed.appendChild(buildMsgEl(botMsg));
+    feed.scrollTop = feed.scrollHeight;
+  } catch(e) {
+    tyEl.remove();
+    const errMsg = {role:'bot',html:'<span style="color:var(--accent)">⚠ Connection error. Please try again.</span>',name:botName,icon:botIcon,ts:Date.now()};
+    history[curCh].push(errMsg);
+    feed.appendChild(buildMsgEl(errMsg));
+    feed.scrollTop = feed.scrollHeight;
+  }
+  document.getElementById('sendBtn').disabled = false;
+}
+
+function buildSys() {
+  const sp = CH[curCh]?.sport||'soccer';
+  const ctx = {
+    soccer:     'You are SportsTalk\'s Premier League expert. Cover EPL scores, standings, tactics, players, transfers. Be enthusiastic and brief.',
+    basketball: 'You are SportsTalk\'s NBA expert. Cover scores, standings, playoffs, player stats, trades. Be enthusiastic and brief.',
+    baseball:   'You are SportsTalk\'s MLB expert. Cover scores, standings, batting/pitching stats, trades. Be enthusiastic and brief.',
+    analysis:   'You are SportsTalk\'s tactics bot. Analyze formations, pressing, set pieces, player roles across all sports.',
+    highlights: 'You are SportsTalk\'s highlights curator. Describe memorable goals, dunks, plays vividly.',
+    bot:        curCh==='scorebot'?'You are ScoreBot — give concise live scores fast.':'You are StatBot — give detailed stats and standings.',
+  }[sp]||'You are a friendly sports expert on SportsTalk.';
+  return `${ctx}\n\nYou are in a Slack-style sports chat. Keep replies concise (under 150 words unless asked for detail). Use **bold** for names/scores. Use emoji naturally. Today is April 21, 2026.`;
+}
+
+function buildMsgs(txt) {
+  const prev = history[curCh].filter(m=>m.role==='user'||m.role==='bot').slice(-8);
+  const msgs = prev.map(m=>({
+    role: m.role==='user'?'user':'assistant',
+    content: m.role==='user'?m.text:(m.html?.replace(/<[^>]+>/g,'')||'')
+  }));
+  // remove last item if it's the current user message (already pushed)
+  if (msgs.length && msgs.at(-1).role==='user' && msgs.at(-1).content===txt) msgs.pop();
+  msgs.push({role:'user',content:txt});
+  return msgs;
+}
+
+function fmtHtml(t) {
+  return t
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/_(.*?)_/g,'<em>$1</em>')
+    .replace(/\n\n/g,'<br><br>')
+    .replace(/\n/g,'<br>');
+}
+
+// ─── REACTIONS ───
+function toggleR(el) {
+  const sp = el.querySelector('span');
+  const n = parseInt(sp.textContent)||0;
+  el.classList.toggle('mine');
+  sp.textContent = el.classList.contains('mine') ? n+1 : n-1;
+}
+
+// ─── UTILS ───
+function handleKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();} }
+function autoResize(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,120)+'px'; }
+function wrapText(w){ const i=document.getElementById('msgIn'),s=i.selectionStart,e=i.selectionEnd,sel=i.value.substring(s,e); i.value=i.value.substring(0,s)+w+sel+w+i.value.substring(e); i.focus(); }
+function addEmoji(){ const emojis=['⚽','🏀','⚾','🔥','👑','💪','😱','🎯','🏆','✨'],i=document.getElementById('msgIn'),p=i.selectionStart; i.value=i.value.substring(0,p)+emojis[Math.floor(Math.random()*emojis.length)]+i.value.substring(p); i.focus(); }
+function addAt(){ const i=document.getElementById('msgIn'),p=i.selectionStart; i.value=i.value.substring(0,p)+'@'+i.value.substring(p); i.focus(); }
+function renameUser(){ const n=prompt('Enter your display name:',uName); if(n&&n.trim()){ uName=n.trim(); uInit=uName[0].toUpperCase(); document.getElementById('uName').textContent=uName; document.getElementById('uAvatar').textContent=uInit; } }
+function toggleNotif(btn){ const on=btn.dataset.on==='1'; btn.dataset.on=on?'0':'1'; btn.textContent=on?'🔔 Notifs':'🔕 Notifs'; btn.style.color=on?'':'var(--accent)'; }
+
+// ─── NBA API (ESPN public — no key needed) ───
+const TEAM_EMOJI = {
+  'Atlanta Hawks':'🦅','Boston Celtics':'🍀','Brooklyn Nets':'🕸️','Charlotte Hornets':'🐝',
+  'Chicago Bulls':'🐂','Cleveland Cavaliers':'⚔️','Dallas Mavericks':'🤠','Denver Nuggets':'⛰️',
+  'Detroit Pistons':'🔩','Golden State Warriors':'💛','Houston Rockets':'🚀','Indiana Pacers':'🏎️',
+  'LA Clippers':'⛵','Los Angeles Lakers':'💜','Memphis Grizzlies':'🐻','Miami Heat':'🔥',
+  'Milwaukee Bucks':'🦌','Minnesota Timberwolves':'🐺','New Orleans Pelicans':'🦩',
+  'New York Knicks':'🗽','Oklahoma City Thunder':'⚡','Orlando Magic':'✨','Philadelphia 76ers':'🔔',
+  'Phoenix Suns':'☀️','Portland Trail Blazers':'🌲','Sacramento Kings':'👑',
+  'San Antonio Spurs':'⚪','Toronto Raptors':'🦖','Utah Jazz':'🎵',
+  'Washington Wizards':'🧙','Oklahoma City Thunder':'⚡'
+};
+function teamEmoji(name){ for(const[k,v] of Object.entries(TEAM_EMOJI)){ if(name&&name.includes(k.split(' ').at(-1))) return v; } return '🏀'; }
+
+function buildNBATicker(games){
+  if(!games.length) return '';
+  const items = games.map(g=>{
+    const live = g.statusName==='in';
+    const dot  = live ? '<div class="live-dot"></div>' : '';
+    const sc   = g.statusName==='pre'
+      ? `<span style="color:var(--text-dim)">${new Date(g.startTime).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}</span>`
+      : `<span class="sc">${g.homeScore}</span>–<span class="sc">${g.awayScore}</span>`;
+    const lbl  = g.statusName==='in'
+      ? `<span style="color:var(--accent)">Q${g.period}</span>`
+      : g.statusName==='post'
+      ? `<span style="color:var(--text-dim)">Final</span>` : '';
+    return `<div class="ticker-item">${dot}${g.homeAbbr} ${sc} ${g.awayAbbr} ${lbl}</div>`;
+  }).join('');
+  return `<div class="ticker-bar"><div class="ticker-label">🔴 NBA</div><div class="ticker-track"><div class="ticker-inner">${items}${items}</div></div></div>`;
+}
+
+function buildNBAMultiCard(games){
+  const rows = games.map(g=>{
+    const homeWin = g.statusName==='post' && parseInt(g.homeScore)>parseInt(g.awayScore);
+    const awayWin = g.statusName==='post' && parseInt(g.awayScore)>parseInt(g.homeScore);
+    const live    = g.statusName==='in';
+    const timeLbl = gameTimeLbl(g);
+    const timeCls = live ? 'lt' : g.statusName==='pre' ? 'style="color:var(--accent4)"' : '';
+    const pill    = g.statusName==='post'
+      ? `<span class="status-pill ft">FT</span>`
+      : live ? `<span class="status-pill live">LIVE</span>`
+      : `<span class="status-pill soon">Soon</span>`;
+    const hScore  = g.statusName==='pre' ? '–' : g.homeScore;
+    const aScore  = g.statusName==='pre' ? '–' : g.awayScore;
+    return `<div class="multi-row">
+      <div class="multi-time ${timeCls}">${live?'Q'+g.period:timeLbl}</div>
+      <div class="multi-teams">
+        <div class="mtr ${homeWin?'win':''}">${teamEmoji(g.homeName)} ${g.homeName}</div>
+        <div class="mtr ${awayWin?'win':''}">${teamEmoji(g.awayName)} ${g.awayName}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:3px;align-items:flex-end">
+        <div class="msc" style="${g.statusName==='pre'?'color:var(--text-dim)':''}">${hScore}</div>
+        <div class="msc" style="${g.statusName==='pre'?'color:var(--text-dim)':''}">${aScore}</div>
+      </div>
+      <div class="mst">${pill}</div>
+    </div>`;
+  }).join('');
+  return `<div class="multi-score-card"><div class="multi-score-header">🏀 NBA · Today's Games</div>${rows}</div>`;
+}
+
+function buildNBAScoreCard(g){
+  const homeWin = g.statusName==='post' && parseInt(g.homeScore)>parseInt(g.awayScore);
+  const awayWin = g.statusName==='post' && parseInt(g.awayScore)>parseInt(g.homeScore);
+  return `<div class="score-card">
+    <div class="score-card-header">
+      <div class="league-name">🏀 NBA${g.note?' · '+g.note:''}</div>
+      ${gamePill(g)}
+    </div>
+    <div class="score-card-body">
+      <div class="team-block">
+        <div class="team-emblem">${teamEmoji(g.homeName)}</div>
+        <div class="team-name" style="${homeWin?'font-weight:700':''}">${g.homeName}</div>
+        <div style="font-size:10px;color:var(--text-dim);margin-top:2px">${g.homeRecord}</div>
+      </div>
+      <div class="score-center">
+        <div class="score-main">${g.statusName==='pre'?'–':g.homeScore+' – '+g.awayScore}</div>
+        <div class="score-time-lbl">${gameTimeLbl(g)}</div>
+      </div>
+      <div class="team-block">
+        <div class="team-emblem">${teamEmoji(g.awayName)}</div>
+        <div class="team-name" style="${awayWin?'font-weight:700':''}">${g.awayName}</div>
+        <div style="font-size:10px;color:var(--text-dim);margin-top:2px">${g.awayRecord}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── 🔑 RapidAPI Key — paste yours here after signing up at rapidapi.com ──
+const RAPIDAPI_KEY = 'ab2b47d2dcmsh6d7068d32d50e3ap15f1d5jsn2d04302fbe1c';
+
+async function fetchNBAGames(){
+  const feed = document.getElementById('feed');
+  if(!feed || curCh!=='nba') return;
+
+  const today   = new Date();
+  const nowTime = today.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+  const dayLbl  = today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+
+  // No key entered yet → show setup instructions
+  if (RAPIDAPI_KEY === 'YOUR_RAPIDAPI_KEY_HERE') {
+    feed.innerHTML = `<div class="empty-state">
+      <div class="big">🔑</div>
+      <h3>API Key Required</h3>
+      <p style="color:var(--text-dim);margin-bottom:16px;max-width:320px">
+        Get a free key at <strong style="color:#fff">rapidapi.com</strong> → search <strong style="color:#fff">API-NBA</strong> → subscribe (Free plan)
+      </p>
+      <div style="background:#111;border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--accent3);text-align:left;max-width:340px;line-height:1.8">
+        1. rapidapi.com → sign up<br>
+        2. Search "API-NBA"<br>
+        3. Subscribe → Basic (Free)<br>
+        4. Copy your X-RapidAPI-Key<br>
+        5. Paste into sportschat.html<br>
+        &nbsp;&nbsp;&nbsp;→ replace YOUR_RAPIDAPI_KEY_HERE
+      </div>
+    </div>`;
+    return;
+  }
+
+  feed.innerHTML = `<div class="empty-state"><div class="big">🏀</div><h3>Loading NBA scores...</h3><p>Fetching from API-NBA via RapidAPI...</p></div>`;
+
+  try {
+    // Format today as YYYY-MM-DD
+    const dateStr = today.toISOString().split('T')[0];
+
+    const res = await fetch(`https://api-nba-v1.p.rapidapi.com/games?date=${dateStr}`, {
+      method: 'GET',
+      headers: {
+        'x-rapidapi-host': 'api-nba-v1.p.rapidapi.com',
+        'x-rapidapi-key':  RAPIDAPI_KEY
+      }
+    });
+    if (!res.ok) throw new Error(`API returned ${res.status} — check your API key`);
+    const data = await res.json();
+
+    // Parse API-NBA response into our standard game shape
+    const rawGames = data.response || [];
+    const games = rawGames.map(g => {
+      const home   = g.teams?.home;
+      const away   = g.teams?.visitors;
+      const scores = g.scores;
+      const period = g.periods?.current || 0;
+      const clock  = g.status?.clock || '';
+
+      let status = 'Scheduled';
+      if (g.status?.long === 'Finished')      status = 'Final';
+      if (g.status?.long === 'In Play')        status = 'In Progress';
+
+      return {
+        home:       home?.name  || '?',
+        homeAbbr:   home?.code  || '?',
+        homeScore:  scores?.home?.points  || 0,
+        away:       away?.name  || '?',
+        awayAbbr:   away?.code  || '?',
+        awayScore:  scores?.visitors?.points || 0,
+        status,
+        period,
+        clock,
+      };
+    });
+
+    const liveCount = games.filter(g => g.status === 'In Progress').length;
+
+    let html = '';
+    if (games.length) html += buildNBATicker(games);
+    html += `<div class="day-divider">${parsed.date || dayLbl}</div>`;
+
+    if (!games.length) {
+      html += `<div class="empty-state" style="flex:unset;padding:32px 0">
+        <div class="big">😴</div><h3>No games today</h3>
+        <p>No NBA games scheduled. Check back on a game night!</p>
+      </div>`;
+    } else {
+      html += `<div class="msg-group"><div class="msg-row">
+        <div class="msg-avatar av-basket">🏀</div>
+        <div class="msg-body">
+          <div class="msg-meta"><span class="msg-author bot">ScoreBot</span><span class="app-tag">APP</span><span class="msg-time">${nowTime}</span></div>
+          <div class="msg-text">🏀 <strong>NBA Scoreboard</strong> — ${games.length} game${games.length>1?'s':''}${liveCount?' · '+liveCount+' live 🔴':''} · via ESPN</div>
+          ${buildNBAMultiCard(games)}
+          <div style="font-size:11px;color:var(--text-dim);margin-top:8px">
+            🔄 Updated ${nowTime} · <span style="color:var(--accent3);cursor:pointer;text-decoration:underline" onclick="fetchNBAGames()">Refresh</span>
+          </div>
+        </div>
+      </div></div>`;
+
+      games.filter(g => g.status !== 'Scheduled').slice(0, 4).forEach(g => {
+        const tag = g.status === 'In Progress' ? '🔴 <strong>Live</strong>' : '📋 <strong>Final</strong>';
+        html += `<div class="msg-group"><div class="msg-row">
+          <div class="msg-avatar av-basket">🏀</div>
+          <div class="msg-body">
+            <div class="msg-meta"><span class="msg-author bot">ScoreBot</span><span class="app-tag">APP</span><span class="msg-time">${nowTime}</span></div>
+            <div class="msg-text">${tag} — ${g.home} vs ${g.away}</div>
+            ${buildNBAScoreCard(g)}
+            <div class="reactions">
+              <div class="reaction" onclick="toggleR(this)">${teamEmoji(g.home)} <span>${Math.floor(Math.random()*200+50)}</span></div>
+              <div class="reaction" onclick="toggleR(this)">${teamEmoji(g.away)} <span>${Math.floor(Math.random()*200+50)}</span></div>
+              <div class="reaction" onclick="toggleR(this)">🔥 <span>${Math.floor(Math.random()*100+20)}</span></div>
+            </div>
+          </div>
+        </div></div>`;
+      });
+    }
+
+    feed.innerHTML = html;
+    history['nba'].forEach(m => feed.appendChild(buildMsgEl(m)));
+    feed.scrollTop = feed.scrollHeight;
+
+  } catch(err) {
+    feed.innerHTML = `<div class="empty-state">
+      <div class="big">⚠️</div>
+      <h3>Failed to load NBA scores</h3>
+      <p style="color:var(--text-dim);margin-bottom:8px;max-width:300px">${err.message}</p>
+      <p style="font-size:12px;color:var(--text-dim);margin-bottom:12px">Make sure your RapidAPI key is correct in the HTML file</p>
+      <span style="color:var(--accent3);cursor:pointer;text-decoration:underline;font-size:13px" onclick="fetchNBAGames()">🔄 Retry</span>
+    </div>`;
+    console.error('NBA RapidAPI error:', err.message);
+  }
+}
+
+// ── helper adapters so existing render fns work with Claude JSON shape ──
+function buildNBATicker(games) {
+  if (!games.length) return '';
+  const items = games.map(g => {
+    const live = g.status === 'In Progress';
+    const dot  = live ? '<div class="live-dot"></div>' : '';
+    const sc   = g.status === 'Scheduled'
+      ? `<span style="color:var(--text-dim)">vs</span>`
+      : `<span class="sc">${g.homeScore}</span>–<span class="sc">${g.awayScore}</span>`;
+    const lbl  = live
+      ? `<span style="color:var(--accent)">Q${g.period}</span>`
+      : g.status === 'Final'
+      ? `<span style="color:var(--text-dim)">Final</span>` : '';
+    const ha = g.home.split(' ').at(-1);
+    const aa = g.away.split(' ').at(-1);
+    return `<div class="ticker-item">${dot}${ha} ${sc} ${aa} ${lbl}</div>`;
+  }).join('');
+  return `<div class="ticker-bar"><div class="ticker-label">🔴 NBA</div><div class="ticker-track"><div class="ticker-inner">${items}${items}</div></div></div>`;
+}
+
+function buildNBAMultiCard(games) {
+  const rows = games.map(g => {
+    const live    = g.status === 'In Progress';
+    const done    = g.status === 'Final';
+    const homeWin = done && g.homeScore > g.awayScore;
+    const awayWin = done && g.awayScore > g.homeScore;
+    const timeLbl = live ? `Q${g.period}` : done ? 'Final' : 'Soon';
+    const pill    = live ? `<span class="status-pill live">LIVE</span>`
+                  : done ? `<span class="status-pill ft">FT</span>`
+                  :        `<span class="status-pill soon">Soon</span>`;
+    const hSc = g.status === 'Scheduled' ? '–' : g.homeScore;
+    const aSc = g.status === 'Scheduled' ? '–' : g.awayScore;
+    return `<div class="multi-row">
+      <div class="multi-time ${live?'lt':''}">${timeLbl}</div>
+      <div class="multi-teams">
+        <div class="mtr ${homeWin?'win':''}">${teamEmoji(g.home)} ${g.home}</div>
+        <div class="mtr ${awayWin?'win':''}">${teamEmoji(g.away)} ${g.away}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:3px;align-items:flex-end">
+        <div class="msc" style="${g.status==='Scheduled'?'color:var(--text-dim)':''}">${hSc}</div>
+        <div class="msc" style="${g.status==='Scheduled'?'color:var(--text-dim)':''}">${aSc}</div>
+      </div>
+      <div class="mst">${pill}</div>
+    </div>`;
+  }).join('');
+  return `<div class="multi-score-card"><div class="multi-score-header">🏀 NBA · Today's Games</div>${rows}</div>`;
+}
+
+function buildNBAScoreCard(g) {
+  const live    = g.status === 'In Progress';
+  const done    = g.status === 'Final';
+  const homeWin = done && g.homeScore > g.awayScore;
+  const awayWin = done && g.awayScore > g.homeScore;
+  const pill    = live ? `<div class="status-pill live">● LIVE</div>`
+                : done ? `<div class="status-pill ft">Final</div>`
+                :        `<div class="status-pill soon">Soon</div>`;
+  const timeLbl = live ? `Q${g.period} ${g.clock||''}` : done ? 'Final' : 'Scheduled';
+  return `<div class="score-card">
+    <div class="score-card-header"><div class="league-name">🏀 NBA</div>${pill}</div>
+    <div class="score-card-body">
+      <div class="team-block">
+        <div class="team-emblem">${teamEmoji(g.home)}</div>
+        <div class="team-name" style="${homeWin?'font-weight:700':''}">${g.home}</div>
+      </div>
+      <div class="score-center">
+        <div class="score-main">${g.status==='Scheduled'?'–':g.homeScore+' – '+g.awayScore}</div>
+        <div class="score-time-lbl">${timeLbl}</div>
+      </div>
+      <div class="team-block">
+        <div class="team-emblem">${teamEmoji(g.away)}</div>
+        <div class="team-name" style="${awayWin?'font-weight:700':''}">${g.away}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── INIT ───
+renderFeed();
+// Auto-fetch NBA when page loads if NBA is default, otherwise fetch on switch
+if (curCh === 'nba') fetchNBAGames();
+</script>
+</body>
+</html>
