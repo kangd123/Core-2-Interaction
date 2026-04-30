@@ -11,7 +11,6 @@ async function loadScores(sport) {
 
     container.innerHTML = `
         <div class="empty">
-            <div class="icon">⏳</div>
             <h3>Loading...</h3>
         </div>`;
 
